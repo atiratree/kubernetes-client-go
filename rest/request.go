@@ -814,7 +814,7 @@ func (r *Request) request(fn func(*http.Request, *http.Response)) error {
 				return err
 			}
 			// For connection errors and apiserver shutdown errors retry.
-			if net.IsConnectionReset(err) {
+			if net.IsConnectionReset(err) || net.IsProbableEOF(err) {
 				// For the purpose of retry, we set the artificial "retry-after" response.
 				// TODO: Should we clean the original response if it exists?
 				resp = &http.Response{
